@@ -266,6 +266,98 @@
                     </a>
                 </li>
                 <li class="sub-header">
+                    <span>INCOME &AMP; EXPENSES</span>
+                </li>
+                <li class="selected has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-package"></div>
+                        </div>
+                        <span>Income</span>
+                    </a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">Income</div>
+                        <div class="sub-menu-icon"><i class="os-icon os-icon-package"></i></div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li><a asp-action="Index" asp-controller="Income">Quotes</a></li>
+                                <li><a href="apps_crypto.html">Invoices</a></li>
+                                <li><a asp-action="Index" asp-controller="Customer">Customers</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="selected has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-newspaper"></div>
+                        </div>
+                        <span>Expense</span>
+                    </a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">Expense</div>
+                        <div class="sub-menu-icon"><i class="os-icon os-icon-newspaper"></i></div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Bills</a></li>
+                                <li><a href="apps_crypto.html">Receipts</a></li>
+                                <li><a href="apps_support_dashboard.html">Purchase Orders</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="sub-header">
+                    <span>ACCOUNTING</span>
+                </li>
+                <li class="selected has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-edit-32"></div>
+                        </div>
+                        <span>Accounting</span>
+                    </a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">Accounting</div>
+                        <div class="sub-menu-icon"><i class="os-icon os-icon-edit-32"></i></div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Transactions</a></li>
+                                <li><a href="apps_crypto.html">Chart of Accounts</a></li>
+                                <li><a href="apps_support_dashboard.html">Balance Sheet</a></li>
+                                <li><a href="apps_support_dashboard.html">Trial Balance</a></li>
+                                <li><a href="apps_support_dashboard.html">Profit and Loss</a></li>
+                                <li><a href="apps_support_dashboard.html">Reconciliation</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+
+                <li class="sub-header">
+                    <span>REPORTING</span>
+                </li>
+                <li class="selected has-sub-menu">
+                    <a href="#">
+                        <div class="icon-w">
+                            <div class="os-icon os-icon-grid"></div>
+                        </div>
+                        <span>Reports</span>
+                    </a>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">Reports</div>
+                        <div class="sub-menu-icon"><i class="os-icon os-icon-grid"></i></div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li><a href="index.html">Tax Reports</a></li>
+                                <li><a href="apps_crypto.html">Income by Customer</a></li>
+                                <li><a href="apps_support_dashboard.html">Purchases by vendors</a></li>
+                                <li><a href="apps_support_dashboard.html">Aged Receivables</a></li>
+                                <li><a href="apps_support_dashboard.html">Aged Payables</a></li>
+                                <li><a href="apps_support_dashboard.html">Account Balances</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+                <li class="sub-header">
                     <span>Profile &amp; Settings</span>
                 </li>
                 <li>
@@ -289,64 +381,30 @@
                         </li>
                     }
                 }
-                <li>
-                    <a asp-action="Index" asp-controller="Tax">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-newspaper"></div>
-                        </div>
-                        <span>Taxes</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="Index" asp-controller="ProductService">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-package"></div>
-                        </div>
-                        <span>Products &amp; Services</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="Index" asp-controller="Vendor">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-window-content"></div>
-                        </div>
-                        <span>Vendors</span>
-                    </a>
-                </li>
-                <li>
-                    <a asp-action="Index" asp-controller="Customer">
+                <li class="selected has-sub-menu">
+                    <a href="#">
                         <div class="icon-w">
                             <div class="os-icon os-icon-coins-4"></div>
                         </div>
-                        <span>Customers</span>
+                        <span>Settings</span>
                     </a>
-                </li>
-                @{
-                    if (x.FindFirst("pid").Value.ToString() == "0")
-                    {
-                        <li class="sub-header">
-                            <span>Collaborations</span>
-                        </li>
-                        <li>
-                            <a asp-action="Index" asp-controller="SubUser">
-                                <div class="icon-w">
-                                    <div class="os-icon os-icon-ui-92"></div>
-                                </div>
-                                <span>Sub Users</span>
-                            </a>
-                        </li>
-                    }
-                }
-                <li class="sub-header">
-                    <span>Income &amp; Expense</span>
-                </li>
-                <li>
-                    <a asp-action="Index" asp-controller="Income">
-                        <div class="icon-w">
-                            <div class="os-icon os-icon-ui-92"></div>
+                    <div class="sub-menu-w">
+                        <div class="sub-menu-header">Settings</div>
+                        <div class="sub-menu-icon"><i class="os-icon os-icon-coins-4"></i></div>
+                        <div class="sub-menu-i">
+                            <ul class="sub-menu">
+                                <li><a asp-action="Index" asp-controller="Tax">Taxes</a></li>
+                                <li><a asp-action="Index" asp-controller="ProductService">Products &amp; Services</a></li>
+                                <li><a asp-action="Index" asp-controller="Vendor">Vendors</a></li>
+                                @{
+                                    if (x.FindFirst("pid").Value.ToString() == "0")
+                                    {
+                                        <li><a asp-action="Index" asp-controller="SubUser">Sub Users</a></li>
+                                    }
+                                }
+                            </ul>
                         </div>
-                        <span>Estimates</span>
-                    </a>
+                    </div>
                 </li>
             </ul>
         </div>
