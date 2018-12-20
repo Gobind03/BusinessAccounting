@@ -153,7 +153,8 @@ namespace AccountingPlanner.Controllers.Panel
                         new Claim("id_user", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_user")),
                         new Claim("id_organization", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")),
                         new Claim("organization_name", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "organization_name")),
-                        new Claim("profile_img", $"{dbPath}/{localFileName}")
+                        new Claim("profile_img", $"{dbPath}/{localFileName}"),
+                        new Claim("pid", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "pid")),
                     };
 
                 var userIdentity = new ClaimsIdentity(claims, "Cookie");
