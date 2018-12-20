@@ -107,6 +107,20 @@ namespace AccountingPlanner.Controllers.Panel
         }
         #endregion
 
+        #region Delete Customer
+        public ActionResult Delete(int id)
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("i_customer_id", id.ToString()));
+            TempData["DeleteMessage"] = "Customer Deleted Successfuly.";
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("delete_customer", parameters);
+
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         private DataTable GetCustomerList()
         {
             List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();

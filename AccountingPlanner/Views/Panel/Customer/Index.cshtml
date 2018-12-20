@@ -34,6 +34,10 @@ END - Breadcrumbs
                         <div class="form-desc">
                             DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
                         </div>
+                        @if (!string.IsNullOrEmpty(Convert.ToString(TempData["DeleteMessage"])))
+                        {
+                            <div class="alert alert-warning"><strong>Deleted!</strong> @TempData["DeleteMessage"]</div>
+                        }
                         @{
                             DataTable _dt;
                             if (ViewData["CustomerList"] != null)
@@ -53,22 +57,33 @@ END - Breadcrumbs
                                     <table id="dataTable1" width="100%" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>S. No.</th>
                                                 <th>Name</th>
                                                 <th>Counry</th>
                                                 <th>eMail</th>
                                                 <th>Mobile</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @for (int i = 0; i < _dt.Rows.Count; i++)
                                             {
                                                 <tr>
-                                                    <td>@(i + 1)</td>
                                                     <td>@_dt.Rows[i]["name"]</td>
                                                     <td>@_dt.Rows[i]["country_name"]</td>
                                                     <td>@_dt.Rows[i]["email"]</td>
                                                     <td>@_dt.Rows[i]["mobile"]</td>
+                                                    <td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                ...
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Customer" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_customer_master"]">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             }
                                         </tbody>
@@ -101,8 +116,6 @@ END - Breadcrumbs
                         {
                             <div class="alert alert-success"><strong>Registered!</strong> @ViewData["SuccessMessage"]</div>
                         }
-
-
                         <form asp-action="Index">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">

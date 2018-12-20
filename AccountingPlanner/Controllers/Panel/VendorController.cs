@@ -107,6 +107,20 @@ namespace AccountingPlanner.Controllers.Panel
         }
         #endregion
 
+        #region Delete Vendor
+        public IActionResult Delete(int id)
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("i_vendor_master", id.ToString()));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("delete_vendor", parameters);
+            TempData["DeleteMessage"] = "Vendor Deleted Successfuly.";
+
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         private DataTable GetVendorList()
         {
             List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();

@@ -35,6 +35,10 @@ END - Breadcrumbs
                         <div class="form-desc">
                             DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
                         </div>
+                        @if (!string.IsNullOrEmpty(Convert.ToString(TempData["DeleteMessage"])))
+                        {
+                            <div class="alert alert-warning"><strong>Deleted!</strong> @TempData["DeleteMessage"]</div>
+                        }
                         @{
                             DataTable _dt;
                             if (ViewData["TaxList"] != null)
@@ -54,22 +58,32 @@ END - Breadcrumbs
                                     <table id="dataTable1" width="100%" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>S. No.</th>
                                                 <th>Tax Label</th>
                                                 <th>Type</th>
                                                 <th>Tax Value</th>
                                                 <th>Applicability</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @for (int i = 0; i < _dt.Rows.Count; i++)
                                             {
                                                 <tr>
-                                                    <td>@(i + 1)</td>
                                                     <td>@_dt.Rows[i]["label"]</td>
                                                     <td>@_dt.Rows[i]["type"]</td>
                                                     <td>@_dt.Rows[i]["value"]</td>
                                                     <td>@_dt.Rows[i]["applicability"]</td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                ...
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Tax" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_tax_master"]">Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
                                                 </tr>
                                             }
                                         </tbody>

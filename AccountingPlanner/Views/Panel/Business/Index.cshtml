@@ -35,6 +35,11 @@ END - Breadcrumbs
                 {
                     <div class="alert alert-success"><strong>Done!</strong> @TempData["SuccessMessage"]</div>
                 }
+                @if (!string.IsNullOrEmpty(Convert.ToString(TempData["DeleteMessage"])))
+                {
+                    <div class="alert alert-warning"><strong>Done!</strong> @TempData["DeleteMessage"]</div>
+                }
+                
                 @{
                     DataTable _dt;
                     if (ViewData["BusinessList"] != null)
@@ -63,19 +68,30 @@ END - Breadcrumbs
                                         <th>Phone</th>
                                         <th>Currency</th>
                                         <th>Country</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @for (int i = 0; i < _dt.Rows.Count; i++)
                                     {
                                         <tr>
-                                            <td>@(i + 1)</td>
                                             <td>@_dt.Rows[i]["name"]</td>
                                             <td>@_dt.Rows[i]["type_of_organization"]</td>
                                             <td>@_dt.Rows[i]["type_of_business"]</td>
                                             <td>@_dt.Rows[i]["mobile"]</td>
                                             <td>@_dt.Rows[i]["currency_label"]</td>
                                             <td>@_dt.Rows[i]["country_name"]</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        ...
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                        <a class="dropdown-item" href="#">Edit</a>
+                                                        <a class="dropdown-item" asp-controller="Business" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_organization_master"]">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>

@@ -56,12 +56,7 @@ namespace AccountingPlanner.Controllers.Panel
 
             return View("~/Views/Panel/Business/Index.cshtml");
         }
-
-        // GET: Business/Details/5
-        public ActionResult Details(int id)
-        {
-            return View("~/Views/Panel/Business/Index.cshtml");
-        }
+        
 
         public ActionResult Create()
         {
@@ -169,28 +164,20 @@ namespace AccountingPlanner.Controllers.Panel
             }
         }
 
-        // GET: Business/Delete/5
+        #region Delete Business
         public ActionResult Delete(int id)
         {
-            return View("~/Views/Panel/Business/Create.cshtml");
-        }
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
 
-        // POST: Business/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+            parameters.Add(new KeyValuePair<string, string>("I_id_organization_master", id.ToString()));
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View("~/Views/Panel/Business/Create.cshtml");
-            }
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("delete_business", parameters);
+
+            TempData["DeleteMessage"] = "Business Deleted Successfuly!";
+
+            return RedirectToAction("Index");
         }
+        #endregion
 
         #region PRIVATE: Get Country List
         private DataTable GetCountryList()

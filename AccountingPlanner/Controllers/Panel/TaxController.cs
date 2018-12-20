@@ -105,6 +105,20 @@ namespace AccountingPlanner.Controllers.Panel
         }
         #endregion
 
+        #region Delete Tax
+        public IActionResult Delete (int id)
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("i_tax_master", id.ToString()));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("delete_tax", parameters);
+            TempData["DeleteMessage"] = "Tax Deleted Successfuly.";
+
+            return RedirectToAction("Index");
+        }
+        #endregion
+
         private DataTable GetTaxList()
         {
             List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
