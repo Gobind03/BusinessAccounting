@@ -1,7 +1,7 @@
-﻿@model AccountingPlanner.Models.Vendor.VendorModel
+﻿@model AccountingPlanner.Models.Customer.CustomerModel
 
 @{
-    ViewData["Title"] = "Vendor";
+    ViewData["Title"] = "Customer";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,13 +23,13 @@ END - Breadcrumbs
     <div class="content-box">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Vendor Management
+                Customer Management
             </h6>
             <div class="row">
                 <div class="col-md-8">
                     <div class="element-box">
                         <h5 class="form-header">
-                            Vendor List
+                            Customer List
                         </h5>
                         <div class="form-desc">
                             DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
@@ -40,15 +40,15 @@ END - Breadcrumbs
                         }
                         @{
                             DataTable _dt;
-                            if (ViewData["VendorList"] != null)
+                            if (ViewData["CustomerList"] != null)
                             {
-                                _dt = (DataTable)ViewData["VendorList"];
+                                _dt = (DataTable)ViewData["CustomerList"];
                                 if (_dt.Rows.Count == 0)
                                 {
                                     <div class="text-center">
-                                        <h5>No Vendor Registered</h5>
+                                        <h5>No Customer Registered</h5>
                                         <small style="border-bottom: 0px;" class="form-desc">
-                                            You have not registered any vendor yet. Fill the form displayed to register a new vendor.
+                                            You have not registered any customer yet. Fill the form displayed to register a new customer.
                                         </small>
                                     </div>
                                 }
@@ -67,23 +67,23 @@ END - Breadcrumbs
                                         <tbody>
                                             @for (int i = 0; i < _dt.Rows.Count; i++)
                                             {
-                                            <tr>
-                                                <td>@_dt.Rows[i]["name"]</td>
-                                                <td>@_dt.Rows[i]["country_name"]</td>
-                                                <td>@_dt.Rows[i]["email"]</td>
-                                                <td>@_dt.Rows[i]["mobile"]</td>
-                                                <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            ...
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                            <a class="dropdown-item" asp-controller="Vendor" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Edit</a>
-                                                            <a class="dropdown-item" asp-controller="Vendor" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Delete</a>
+                                                <tr>
+                                                    <td>@_dt.Rows[i]["name"]</td>
+                                                    <td>@_dt.Rows[i]["country_name"]</td>
+                                                    <td>@_dt.Rows[i]["email"]</td>
+                                                    <td>@_dt.Rows[i]["mobile"]</td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                ...
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <a class="dropdown-item" asp-controller="Customer" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_customer_master"]">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Customer" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_customer_master"]">Delete</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -113,20 +113,18 @@ END - Breadcrumbs
                         }
                         @if (!string.IsNullOrEmpty(Convert.ToString(ViewData["SuccessMessage"])))
                         {
-                            <div class="alert alert-success"><strong>Registered!</strong> @ViewData["SuccessMessage"]</div>
+                            <div class="alert alert-success"><strong>Updated!</strong> @ViewData["SuccessMessage"]</div>
                         }
-
-
-                        <form asp-action="Index">
+                        <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label asp-for="vendor_name" class="control-label"></label>
-                                <input asp-for="vendor_name" placeholder="Vendor Name" class="form-control" />
-                                <span asp-validation-for="vendor_name" class="text-danger"></span>
+                                <label asp-for="name" class="control-label"></label>
+                                <input asp-for="name" placeholder="Customer Name" class="form-control" />
+                                <span asp-validation-for="name" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="address" class="control-label"></label>
-                                <input asp-for="address" placeholder="Vendor Address" class="form-control" />
+                                <input placeholder="Customer Address" asp-for="address" class="form-control" />
                                 <span asp-validation-for="address" class="text-danger"></span>
                             </div>
                             <div class="form-group">
@@ -149,42 +147,42 @@ END - Breadcrumbs
                                 <span asp-validation-for="country" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="province" class="control-label"></label>
-                                <input placeholder="Province Name" asp-for="province" class="form-control" />
-                                <span asp-validation-for="province" class="text-danger"></span>
+                                <label asp-for="state" class="control-label"></label>
+                                <input asp-for="state" placeholder="Customer State" class="form-control" />
+                                <span asp-validation-for="state" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="city" class="control-label"></label>
-                                <input placeholder="City Name" asp-for="city" class="form-control" />
+                                <input asp-for="city" placeholder="Customer City" class="form-control" />
                                 <span asp-validation-for="city" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="pin" class="control-label"></label>
-                                <input asp-for="pin" placeholder="Pin Code" class="form-control" />
+                                <input asp-for="pin" placeholder="Customer Pin" class="form-control" />
                                 <span asp-validation-for="pin" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="phone" class="control-label"></label>
-                                <input asp-for="phone" placeholder="Phone Number" class="form-control" />
+                                <input asp-for="phone" placeholder="Customer Phone" class="form-control" />
                                 <span asp-validation-for="phone" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="fax" class="control-label"></label>
-                                <input asp-for="fax" class="form-control" placeholder="Fax"/>
+                                <input asp-for="fax" placeholder="Customer Fax" class="form-control" />
                                 <span asp-validation-for="fax" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="email" class="control-label"></label>
-                                <input asp-for="email" class="form-control" placeholder="eMail"/>
-                                <span asp-validation-for="email" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
                                 <label asp-for="mobile" class="control-label"></label>
-                                <input asp-for="mobile" class="form-control" placeholder="Mobile Number"/>
+                                <input asp-for="mobile" placeholder="Customer Mobile" class="form-control" />
                                 <span asp-validation-for="mobile" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Register" class="btn btn-primary" />
+                                <label asp-for="email" class="control-label"></label>
+                                <input asp-for="email" placeholder="Customer eMail" class="form-control" />
+                                <span asp-validation-for="email" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Update" class="btn btn-primary" />
                             </div>
                         </form>
                     </div>

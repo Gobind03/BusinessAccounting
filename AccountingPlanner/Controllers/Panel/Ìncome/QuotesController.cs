@@ -12,7 +12,7 @@ using System.Security.Claims;
 namespace AccountingPlanner.Controllers.Panel
 {
     [Authorize]
-    public class IncomeController : Controller
+    public class QuotesController : Controller
     {
 
         #region Controller Properties
@@ -21,7 +21,7 @@ namespace AccountingPlanner.Controllers.Panel
         private MySQLGateway _objDataHelper;
         #endregion
 
-        public IncomeController(IConfiguration configuration)
+        public QuotesController(IConfiguration configuration)
         {
             this._configuration = configuration;
             this._objDataHelper = new MySQLGateway(this._configuration.GetConnectionString("Connection"));
@@ -50,7 +50,7 @@ namespace AccountingPlanner.Controllers.Panel
                 ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
             }
 
-            return View("~/Views/Panel/Income/Index.cshtml");
+            return View("~/Views/Panel/Quotes/Index.cshtml");
         }
         #endregion
 
@@ -58,18 +58,40 @@ namespace AccountingPlanner.Controllers.Panel
         [HttpGet]
         public IActionResult Create()
         {
-            return View("~/Views/Panel/Income/Create.cshtml");
+            // GET MASTERS
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "customer"));
+            parameters.Add(new KeyValuePair<string, string>("param1", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+
+            ViewBag.CustomerList = _objHelper.checkDBNullResponse(_dtResp) ? _dtResp : null;
+
+            return View("~/Views/Panel/Quotes/Create.cshtml");
         }
         #endregion
 
         #region Insert Estimate
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([FromBody] EstimateModel estimateModel)
+        public IActionResult Create(EstimateModel estimateModel)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                return View("~/Views/Panel/Income/Create.cshtml");
+                // GET MASTERS
+                List<KeyValuePair<string, string>> parameters1 = new List<KeyValuePair<string, string>>();
+
+                parameters1.Add(new KeyValuePair<string, string>("selectBy", "customer"));
+                parameters1.Add(new KeyValuePair<string, string>("param1", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")));
+                parameters1.Add(new KeyValuePair<string, string>("param2", ""));
+
+                DataTable _dtResp1 = _objDataHelper.ExecuteProcedure("entity_master_select", parameters1);
+
+                ViewBag.CustomerList = _objHelper.checkDBNullResponse(_dtResp1) ? _dtResp1 : null;
+
+                return View("~/Views/Panel/Quotes/Create.cshtml");
             }
 
             List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
@@ -86,7 +108,7 @@ namespace AccountingPlanner.Controllers.Panel
             parameters.Add(new KeyValuePair<string, string>("i_subhead", estimateModel.subhead));
             parameters.Add(new KeyValuePair<string, string>("i_version", estimateModel.version));
             parameters.Add(new KeyValuePair<string, string>("i_created_by", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_user")));
-            
+
             DataTable _dtResp = _objDataHelper.ExecuteProcedure("insert_estimate_master", parameters);
 
             if (this._objHelper.checkDBResponse(_dtResp))
@@ -114,15 +136,16 @@ namespace AccountingPlanner.Controllers.Panel
                     parameters.Remove(new KeyValuePair<string, string>("i_price", estimateModel.estimateDetailList[i].price));
                     parameters.Remove(new KeyValuePair<string, string>("i_amount", estimateModel.estimateDetailList[i].amount));
                 }
-                
-                
+
+
             }
             else
             {
-                ViewData["ErrorMessage"] = "Estimates service unavailable";
+                TempData["ErrorMessage"] = "Estimates service unavailable";
             }
 
-            return View("~/Views/Panel/Income/Create.cshtml");
+            TempData["SuccessMessage"] = "Quote Created Successfuly.";
+            return RedirectToAction("Index");
         }
         #endregion
     }

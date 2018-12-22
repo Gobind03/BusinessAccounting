@@ -103,6 +103,100 @@ namespace AccountingPlanner.Controllers.Panel
         }
         #endregion
 
+
+        #region Edit Product
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            ViewData["ProductList"] = null;
+
+            DataTable _dtResp = GetProductList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                ViewData["ProductList"] = _dtResp;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "product_by_id"));
+            parameters.Add(new KeyValuePair<string, string>("param1", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp1 = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+
+            ProductModel product = new ProductModel();
+            product.description = Convert.ToString(_dtResp1.Rows[0]["description"]);
+            product.is_purchased = Convert.ToString(_dtResp1.Rows[0]["is_purchased"]);
+            product.is_sold = Convert.ToString(_dtResp1.Rows[0]["is_sold"]);
+            product.price = Convert.ToString(_dtResp1.Rows[0]["price"]);
+            product.title = Convert.ToString(_dtResp1.Rows[0]["title"]);
+            product.type = Convert.ToString(_dtResp1.Rows[0]["type"]);
+
+            return View("~/Views/Panel/ProductService/Edit.cshtml", product);
+        }
+        #endregion
+
+        #region Update Product
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, ProductModel product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/Panel/ProductService/Edit.cshtml");
+            }
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("product_id", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("i_product_type", product.type));
+            parameters.Add(new KeyValuePair<string, string>("i_title", product.title));
+            parameters.Add(new KeyValuePair<string, string>("i_description", product.description));
+            parameters.Add(new KeyValuePair<string, string>("i_price", product.price));
+            parameters.Add(new KeyValuePair<string, string>("i_is_sold", product.is_sold));
+            parameters.Add(new KeyValuePair<string, string>("i_is_purchased", product.is_purchased));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("update_product", parameters);
+
+            if (this._objHelper.checkDBResponse(_dtResp))
+            {
+                if (_dtResp.Rows[0]["response"].ToString() == "0")
+                {
+                    ViewData["ErrorMessage"] = _dtResp.Rows[0]["message"].ToString();
+                }
+                else
+                {
+                    ViewData["SuccessMessage"] = "Product updated successfuly.";
+                }
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Product service unavailable";
+            }
+
+            ViewData["ProductList"] = null;
+
+            DataTable _dtResp2 = GetProductList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp2))
+            {
+                ViewData["ProductList"] = _dtResp2;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            ViewData["ProductList"] = GetProductList();
+            return View("~/Views/Panel/ProductService/Edit.cshtml");
+        }
+        #endregion
+
         #region Delete Product
         public IActionResult Delete(int id)
         {

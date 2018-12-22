@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Claims;
@@ -54,6 +55,7 @@ namespace AccountingPlanner.Controllers.Panel
         {
             if (!ModelState.IsValid)
             {
+                ViewData["CountryList"] = GetCountryList();
                 return View("~/Views/Panel/Customer/Index.cshtml");
             }
 
@@ -118,6 +120,110 @@ namespace AccountingPlanner.Controllers.Panel
             DataTable _dtResp = _objDataHelper.ExecuteProcedure("delete_customer", parameters);
 
             return RedirectToAction("Index");
+        }
+        #endregion
+
+        #region Edit Product
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            ViewData["CustomerList"] = null;
+
+            DataTable _dtResp = GetCustomerList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                ViewData["CustomerList"] = _dtResp;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "customer_by_id"));
+            parameters.Add(new KeyValuePair<string, string>("param1", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp1 = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+
+            CustomerModel customer = new CustomerModel();
+            customer.address = Convert.ToString(_dtResp1.Rows[0]["address"]);
+            customer.city = Convert.ToString(_dtResp1.Rows[0]["city"]);
+            customer.country = Convert.ToInt32(_dtResp1.Rows[0]["country"]);
+            customer.email = Convert.ToString(_dtResp1.Rows[0]["email"]);
+            customer.fax = Convert.ToString(_dtResp1.Rows[0]["fax"]);
+            customer.mobile = Convert.ToString(_dtResp1.Rows[0]["mobile"]);
+            customer.name = Convert.ToString(_dtResp1.Rows[0]["name"]);
+            customer.phone = Convert.ToString(_dtResp1.Rows[0]["phone"]);
+            customer.state = Convert.ToString(_dtResp1.Rows[0]["state"]);
+            customer.pin = Convert.ToString(_dtResp1.Rows[0]["pin"]);
+
+            ViewData["CountryList"] = GetCountryList();
+            return View("~/Views/Panel/Customer/Edit.cshtml", customer);
+        }
+        #endregion
+
+        #region Update Product
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, CustomerModel product)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["CountryList"] = GetCountryList();
+                return View("~/Views/Panel/Customer/Edit.cshtml");
+            }
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("customer_id", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("i_name", product.name));
+            parameters.Add(new KeyValuePair<string, string>("i_address", product.address));
+            parameters.Add(new KeyValuePair<string, string>("i_country", product.country.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("i_state", product.state));
+            parameters.Add(new KeyValuePair<string, string>("i_city", product.city));
+            parameters.Add(new KeyValuePair<string, string>("i_pin", product.pin));
+            parameters.Add(new KeyValuePair<string, string>("i_phone", product.phone));
+            parameters.Add(new KeyValuePair<string, string>("i_fax", product.fax));
+            parameters.Add(new KeyValuePair<string, string>("i_mobile", product.mobile));
+            parameters.Add(new KeyValuePair<string, string>("i_email",  product.email));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("update_customer", parameters);
+
+            if (this._objHelper.checkDBResponse(_dtResp))
+            {
+                if (_dtResp.Rows[0]["response"].ToString() == "0")
+                {
+                    ViewData["ErrorMessage"] = _dtResp.Rows[0]["message"].ToString();
+                }
+                else
+                {
+                    ViewData["SuccessMessage"] = "Customer updated successfuly.";
+                }
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Customer service unavailable";
+            }
+
+            ViewData["CustomerList"] = null;
+
+            DataTable _dtResp2 = GetCustomerList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp2))
+            {
+                ViewData["CustomerList"] = _dtResp2;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            ViewData["CountryList"] = GetCountryList();
+            ViewData["CustomerList"] = GetCustomerList();
+            return View("~/Views/Panel/Customer/Edit.cshtml");
         }
         #endregion
 

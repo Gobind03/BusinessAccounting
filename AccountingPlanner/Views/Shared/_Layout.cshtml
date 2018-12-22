@@ -280,7 +280,7 @@
                         <div class="sub-menu-icon"><i class="os-icon os-icon-package"></i></div>
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
-                                <li><a asp-action="Index" asp-controller="Income">Quotes</a></li>
+                                <li><a asp-action="Index" asp-controller="Quotes">Quotes</a></li>
                                 <li><a href="apps_crypto.html">Invoices</a></li>
                                 <li><a asp-action="Index" asp-controller="Customer">Customers</a></li>
                             </ul>
@@ -299,8 +299,8 @@
                         <div class="sub-menu-icon"><i class="os-icon os-icon-newspaper"></i></div>
                         <div class="sub-menu-i">
                             <ul class="sub-menu">
-                                <li><a href="index.html">Bills</a></li>
-                                <li><a href="apps_crypto.html">Receipts</a></li>
+                                <li><a asp-controller="Bills" asp-action="Index">Bills</a></li>
+                                <li><a asp-controller="Reciept" asp-action="Index">Receipts</a></li>
                                 <li><a href="apps_support_dashboard.html">Purchase Orders</a></li>
                             </ul>
                         </div>

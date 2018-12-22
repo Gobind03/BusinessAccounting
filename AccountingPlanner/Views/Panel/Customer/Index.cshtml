@@ -78,7 +78,7 @@ END - Breadcrumbs
                                                                 ...
                                                             </button>
                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Customer" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_customer_master"]">Edit</a>
                                                                 <a class="dropdown-item" asp-controller="Customer" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_customer_master"]">Delete</a>
                                                             </div>
                                                         </div>

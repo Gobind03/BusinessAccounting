@@ -67,23 +67,23 @@ END - Breadcrumbs
                                         <tbody>
                                             @for (int i = 0; i < _dt.Rows.Count; i++)
                                             {
-                                            <tr>
-                                                <td>@_dt.Rows[i]["name"]</td>
-                                                <td>@_dt.Rows[i]["country_name"]</td>
-                                                <td>@_dt.Rows[i]["email"]</td>
-                                                <td>@_dt.Rows[i]["mobile"]</td>
-                                                <td>
-                                                    <div class="btn-group" role="group">
-                                                        <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                            ...
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                            <a class="dropdown-item" asp-controller="Vendor" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Edit</a>
-                                                            <a class="dropdown-item" asp-controller="Vendor" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Delete</a>
+                                                <tr>
+                                                    <td>@_dt.Rows[i]["name"]</td>
+                                                    <td>@_dt.Rows[i]["country_name"]</td>
+                                                    <td>@_dt.Rows[i]["email"]</td>
+                                                    <td>@_dt.Rows[i]["mobile"]</td>
+                                                    <td>
+                                                        <div class="btn-group" role="group">
+                                                            <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                ...
+                                                            </button>
+                                                            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                                <a class="dropdown-item" asp-controller="Vendor" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Vendor" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_vendor_master"]">Delete</a>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                                    </td>
+                                                </tr>
                                             }
                                         </tbody>
                                     </table>
@@ -113,11 +113,11 @@ END - Breadcrumbs
                         }
                         @if (!string.IsNullOrEmpty(Convert.ToString(ViewData["SuccessMessage"])))
                         {
-                            <div class="alert alert-success"><strong>Registered!</strong> @ViewData["SuccessMessage"]</div>
+                            <div class="alert alert-success"><strong>Updated!</strong> @ViewData["SuccessMessage"]</div>
                         }
 
 
-                        <form asp-action="Index">
+                        <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label asp-for="vendor_name" class="control-label"></label>
@@ -170,21 +170,21 @@ END - Breadcrumbs
                             </div>
                             <div class="form-group">
                                 <label asp-for="fax" class="control-label"></label>
-                                <input asp-for="fax" class="form-control" placeholder="Fax"/>
+                                <input asp-for="fax" class="form-control" placeholder="Fax" />
                                 <span asp-validation-for="fax" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="email" class="control-label"></label>
-                                <input asp-for="email" class="form-control" placeholder="eMail"/>
+                                <input asp-for="email" class="form-control" placeholder="eMail" />
                                 <span asp-validation-for="email" class="text-danger"></span>
                             </div>
                             <div class="form-group">
                                 <label asp-for="mobile" class="control-label"></label>
-                                <input asp-for="mobile" class="form-control" placeholder="Mobile Number"/>
+                                <input asp-for="mobile" class="form-control" placeholder="Mobile Number" />
                                 <span asp-validation-for="mobile" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <input type="submit" value="Register" class="btn btn-primary" />
+                                <input type="submit" value="Update" class="btn btn-primary" />
                             </div>
                         </form>
                     </div>
@@ -193,3 +193,4 @@ END - Breadcrumbs
         </div>
     </div>
 </div>
+

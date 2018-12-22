@@ -83,5 +83,85 @@ namespace AccountingPlanner.Controllers.Generic
 
             return new JsonResult(resp);
         }
+
+        [HttpGet("ProductsList")]
+        public JsonResult ProductsList()
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "product"));
+            parameters.Add(new KeyValuePair<string, string>("param1", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+            List<Dictionary<string, string>> resp = new List<Dictionary<string, string>>();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                resp = _objHelper.ConvertTableToDictionary(_dtResp);
+            }
+
+            return new JsonResult(resp);
+        }
+
+        [HttpGet("CountryList")]
+        public JsonResult CountryList()
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "country"));
+            parameters.Add(new KeyValuePair<string, string>("param1", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+            List<Dictionary<string, string>> resp = new List<Dictionary<string, string>>();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                resp = _objHelper.ConvertTableToDictionary(_dtResp);
+            }
+
+            return new JsonResult(resp);
+        }
+
+        [HttpGet("Product/{id}")]
+        public JsonResult Product(string id)
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "product_by_id"));
+            parameters.Add(new KeyValuePair<string, string>("param1", id));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+            List<Dictionary<string, string>> resp = new List<Dictionary<string, string>>();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                resp = _objHelper.ConvertTableToDictionary(_dtResp);
+            }
+
+            return new JsonResult(resp);
+        }
+
+        [HttpGet("TaxList")]
+        public JsonResult TaxList()
+        {
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "tax"));
+            parameters.Add(new KeyValuePair<string, string>("param1", _objHelper.GetTokenData(HttpContext.User.Identity as ClaimsIdentity, "id_organization")));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+            List<Dictionary<string, string>> resp = new List<Dictionary<string, string>>();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                resp = _objHelper.ConvertTableToDictionary(_dtResp);
+            }
+
+            return new JsonResult(resp);
+        }
     }
 }

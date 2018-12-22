@@ -1,5 +1,8 @@
 ﻿@model AccountingPlanner.Models.Estimate.EstimateModel
-
+@{ 
+    ViewData["Title"] = "Create Quotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 <ul class="breadcrumb">
     <li class="breadcrumb-item">
         <a href="index.html">Home</a>
@@ -28,7 +31,7 @@ END - Breadcrumbs
                     DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
                 </div>
 
-                <form asp-action="Create">
+                <form asp-action="Create" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -59,6 +62,14 @@ END - Breadcrumbs
                                     <label asp-for="cutomer" class="control-label"></label>
                                     <select asp-for="cutomer" class="form-control">
                                         <option value="">-- Choose One --</option>
+                                        @{ 
+                                            for (int i = 0; i < ViewBag.CustomerList.Rows.Count; i++)
+                                            {
+                                        <option value="@ViewBag.CustomerList.Rows[i]["id_customer_master"]">
+                                            @ViewBag.CustomerList.Rows[i]["name"]
+                                        </option>
+                                            }
+                                        }
                                     </select>
                                     <span asp-validation-for="cutomer" class="text-danger"></span>
                                 </div>
@@ -66,7 +77,7 @@ END - Breadcrumbs
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label asp-for="currency" class="control-label"></label>
-                                    <select asp-for="currency" class="form-control">
+                                    <select asp-for="currency" class="form-control" id="countryList">
                                         <option value="">-- Choose One --</option>
                                     </select>
                                     <span asp-validation-for="currency" class="text-danger"></span>
@@ -122,7 +133,7 @@ END - Breadcrumbs
                         </div>
                     </fieldset>
                     <fieldset>
-                        <legend><span>Item Details</span></legend>
+                        <legend><span>Item Details <button class="btn btn-sm btn-success" type="button" id="addGrid">Add</button></span></legend>
 
                         <table class="table table-bordered">
                             <thead>
@@ -136,30 +147,8 @@ END - Breadcrumbs
                                     <th class="col-xs-1"></th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="form-control form-control-sm">
-                                            <option value="">-- Choose One --</option>
-                                        </select>
-                                    </td>
-                                    <td>
-                                        <textarea class="form-control form-control-sm" placeholder="Description For Item"></textarea>
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control form-control-sm" placeholder="Quantity" />
-                                    </td>
-                                    <td>
-                                        <input type="number" class="form-control form-control-sm" placeholder="Price" />
-                                    </td>
-                                    <td>
-                                        <select class="form-control form-control-sm">
-                                            <option value="">-- Choose One --</option>
-                                        </select>
-                                    </td>
-                                    <td>0.00</td>
-                                    <td><button class="btn btn-success btn-sm" type="button">Add</button></td>
-                                </tr>
+                            <tbody id="list">
+                              
                             </tbody>
                         </table>
                         <hr />
@@ -176,3 +165,9 @@ END - Breadcrumbs
         </div>
     </div>
 </div>
+
+
+@section Scripts
+{
+    <script src="~/custom/quotes.js"></script>
+}

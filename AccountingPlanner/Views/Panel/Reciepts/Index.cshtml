@@ -1,8 +1,7 @@
-﻿@model AccountingPlanner.Models.Tax.TaxModel
-@using System.Data;
+﻿@model AccountingPlanner.Models.Expense.RecieptModel
 
 @{
-    ViewData["Title"] = "Tax";
+    ViewData["Title"] = "Reciepts";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,12 +10,13 @@
         <a href="index.html">Home</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="index.html">Tax</a>
+        <a href="index.html">Expense</a>
     </li>
     <li class="breadcrumb-item">
-        <span>Management</span>
+        <span>Reciepts</span>
     </li>
 </ul>
+
 <!--------------------
 END - Breadcrumbs
 -------------------->
@@ -24,13 +24,13 @@ END - Breadcrumbs
     <div class="content-box">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Tax Management
+                Reciept Management
             </h6>
             <div class="row">
                 <div class="col-md-8">
                     <div class="element-box">
                         <h5 class="form-header">
-                            Tax List
+                            Reciept List
                         </h5>
                         <div class="form-desc">
                             DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
@@ -41,15 +41,15 @@ END - Breadcrumbs
                         }
                         @{
                             DataTable _dt;
-                            if (ViewData["TaxList"] != null)
+                            if (ViewData["RecieptList"] != null)
                             {
-                                _dt = (DataTable)ViewData["TaxList"];
+                                _dt = (DataTable)ViewData["RecieptList"];
                                 if (_dt.Rows.Count == 0)
                                 {
                                     <div class="text-center">
-                                        <h5>No Tax Registered</h5>
+                                        <h5>No Reciept Registered</h5>
                                         <small style="border-bottom: 0px;" class="form-desc">
-                                            You have not registered any tax yet. Fill the form displayed to register a new tax.
+                                            You have not registered any reciepts yet. Fill the form displayed to register a new reciept.
                                         </small>
                                     </div>
                                 }
@@ -58,10 +58,10 @@ END - Breadcrumbs
                                     <table id="dataTable1" width="100%" class="table table-bordered table-hover">
                                         <thead>
                                             <tr>
-                                                <th>Tax Label</th>
-                                                <th>Type</th>
-                                                <th>Tax Value</th>
-                                                <th>Applicability</th>
+                                                <th>Image</th>
+                                                <th>Date</th>
+                                                <th>Sub Total</th>
+                                                <th>Total</th>
                                                 <th></th>
                                             </tr>
                                         </thead>
@@ -69,18 +69,18 @@ END - Breadcrumbs
                                             @for (int i = 0; i < _dt.Rows.Count; i++)
                                             {
                                                 <tr>
-                                                    <td>@_dt.Rows[i]["label"]</td>
-                                                    <td>@_dt.Rows[i]["type"]</td>
-                                                    <td>@_dt.Rows[i]["value"]</td>
-                                                    <td>@_dt.Rows[i]["applicability"]</td>
+                                                    <td><a href="@_dt.Rows[i]["image"]" target="_blank">View</a></td>
+                                                    <td>@_dt.Rows[i]["dated"]</td>
+                                                    <td>@_dt.Rows[i]["subtotal"]</td>
+                                                    <td>@_dt.Rows[i]["total"]</td>
                                                     <td>
                                                         <div class="btn-group" role="group">
                                                             <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                 ...
                                                             </button>
                                                             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                                                                <a class="dropdown-item" asp-controller="Tax" asp-action="Edit" asp-route-id="@_dt.Rows[i]["id_tax_master"]">Edit</a>
-                                                                <a class="dropdown-item" asp-controller="Tax" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_tax_master"]">Delete</a>
+                                                                <a class="dropdown-item" href="#">Edit</a>
+                                                                <a class="dropdown-item" asp-controller="Customer" asp-action="Delete" asp-route-id="@_dt.Rows[i]["id_reciept_master"]">Delete</a>
                                                             </div>
                                                         </div>
                                                     </td>
@@ -103,7 +103,7 @@ END - Breadcrumbs
                 <div class="col-md-4">
                     <div class="element-box">
                         <h5 class="form-header">
-                            Register Tax
+                            Register Vendor
                         </h5>
                         <div class="form-desc">
                             DropzoneJS is an open source library that provides.
@@ -116,38 +116,72 @@ END - Breadcrumbs
                         {
                             <div class="alert alert-success"><strong>Registered!</strong> @ViewData["SuccessMessage"]</div>
                         }
-                        <form asp-action="Index">
+
+                        <form asp-action="Index" enctype="multipart/form-data">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
-                                <label asp-for="header" class="control-label"></label>
-                                <input asp-for="header" placeholder="Enter Header/Label For Tax" class="form-control" />
-                                <span asp-validation-for="header" class="text-danger"></span>
+                                <label asp-for="image" class="control-label"></label>
+                                <input asp-for="image" class="form-control" />
+                                <span asp-validation-for="image" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="type" class="control-label"></label>
-                                <select asp-for="type" class="form-control">
+                                <label asp-for="dated" class="control-label"></label>
+                                <input type="date" asp-for="dated" class="form-control" />
+                                <span asp-validation-for="dated" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="notes" class="control-label"></label>
+                                <input placeholder="Enter nodes" asp-for="notes" class="form-control" />
+                                <span asp-validation-for="notes" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="category" class="control-label"></label>
+                                <select asp-for="category" class="form-control">
                                     <option value="">-- Choose One --</option>
-                                    <option value="Fixed">Fixed</option>
-                                    <option value="Percentage">Percentage</option>
+                                    <option value="1">Accounting Fees</option>
                                 </select>
-                                <span asp-validation-for="type" class="text-danger"></span>
+                                <span asp-validation-for="category" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <label asp-for="value" class="control-label"></label>
-                                <input placeholder="Enter value for tax" type="number" asp-for="value" class="form-control" />
-                                <span asp-validation-for="value" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="applicability" class="control-label"></label>
-                                <select asp-for="applicability" class="form-control">
+                                <label asp-for="payment_account" class="control-label"></label>
+                                <select asp-for="payment_account" class="form-control">
                                     <option value="">-- Choose One --</option>
-                                    <option value="Mendatory">Mendatory</option>
-                                    <option value="Optional">Optional</option>
+                                    <option value="1">Cash On Hand</option>
+                                    <option value="2">Owner Investment / Drawings</option>
                                 </select>
-                                <span asp-validation-for="applicability" class="text-danger"></span>
+                                <span asp-validation-for="payment_account" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Register Tax</button>
+                                <label asp-for="subtotal" class="control-label"></label>
+                                <input type="number" asp-for="subtotal" class="form-control" />
+                                <span asp-validation-for="subtotal" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="currency" class="control-label"></label>
+                                <select asp-for="currency" class="form-control">
+                                    <option value="">-- Choose One --</option>
+                                    @{
+                                        DataTable dt2;
+                                        if (ViewData["CountryList"] != null)
+                                        {
+                                            dt2 = (DataTable)ViewData["CountryList"];
+
+                                            for (int i = 0; i < dt2.Rows.Count; i++)
+                                            {
+                                                <option value="@dt2.Rows[i]["id_country"]">@dt2.Rows[i]["currency"]</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="currency" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="total" class="control-label"></label>
+                                <input type="number" asp-for="total" class="form-control" />
+                                <span asp-validation-for="total" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" value="Create" class="btn btn-primary" />
                             </div>
                         </form>
                     </div>

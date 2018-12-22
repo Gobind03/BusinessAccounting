@@ -114,9 +114,9 @@ END - Breadcrumbs
                         }
                         @if (!string.IsNullOrEmpty(Convert.ToString(ViewData["SuccessMessage"])))
                         {
-                            <div class="alert alert-success"><strong>Registered!</strong> @ViewData["SuccessMessage"]</div>
+                            <div class="alert alert-success"><strong>Updated!</strong> @ViewData["SuccessMessage"]</div>
                         }
-                        <form asp-action="Index">
+                        <form asp-action="Edit">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-group">
                                 <label asp-for="header" class="control-label"></label>
@@ -147,7 +147,7 @@ END - Breadcrumbs
                                 <span asp-validation-for="applicability" class="text-danger"></span>
                             </div>
                             <div class="form-group">
-                                <button type="submit" class="btn btn-primary">Register Tax</button>
+                                <button type="submit" class="btn btn-primary">Update Tax</button>
                             </div>
                         </form>
                     </div>

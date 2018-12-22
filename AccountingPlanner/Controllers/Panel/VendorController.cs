@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Security.Claims;
@@ -54,6 +55,7 @@ namespace AccountingPlanner.Controllers.Panel
         {
             if (!ModelState.IsValid)
             {
+                ViewData["CountryList"] = GetCountryList();
                 return View("~/Views/Panel/Vendor/Index.cshtml");
             }
 
@@ -118,6 +120,110 @@ namespace AccountingPlanner.Controllers.Panel
             TempData["DeleteMessage"] = "Vendor Deleted Successfuly.";
 
             return RedirectToAction("Index");
+        }
+        #endregion
+
+        #region Edit Vendor
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            ViewData["VendorList"] = null;
+
+            DataTable _dtResp = GetVendorList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp))
+            {
+                ViewData["VendorList"] = _dtResp;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            ViewData["CountryList"] = GetCountryList();
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("selectBy", "vendor_by_id"));
+            parameters.Add(new KeyValuePair<string, string>("param1", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("param2", ""));
+
+            DataTable _dtResp1 = _objDataHelper.ExecuteProcedure("entity_master_select", parameters);
+
+            VendorModel vendor = new VendorModel();
+            vendor.address = Convert.ToString(_dtResp1.Rows[0]["address"]);
+            vendor.city = Convert.ToString(_dtResp1.Rows[0]["city"]);
+            vendor.country = Convert.ToString(_dtResp1.Rows[0]["country"]);
+            vendor.email = Convert.ToString(_dtResp1.Rows[0]["email"]);
+            vendor.fax = Convert.ToString(_dtResp1.Rows[0]["fax"]);
+            vendor.mobile = Convert.ToString(_dtResp1.Rows[0]["mobile"]);
+            vendor.pin = Convert.ToString(_dtResp1.Rows[0]["pin"]);
+            vendor.province = Convert.ToString(_dtResp1.Rows[0]["state"]);
+            vendor.phone = Convert.ToString(_dtResp1.Rows[0]["phone"]);
+            vendor.vendor_name = Convert.ToString(_dtResp1.Rows[0]["name"]);
+
+            return View("~/Views/Panel/Vendor/Edit.cshtml", vendor);
+        }
+        #endregion
+
+        #region Update Vendor
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, VendorModel vendorModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ViewData["CountryList"] = GetCountryList();
+                return View("~/Views/Panel/Vendor/Edit.cshtml");
+            }
+
+            List<KeyValuePair<string, string>> parameters = new List<KeyValuePair<string, string>>();
+
+            parameters.Add(new KeyValuePair<string, string>("vendor_id", id.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("i_name", vendorModel.vendor_name));
+            parameters.Add(new KeyValuePair<string, string>("i_address", vendorModel.address));
+            parameters.Add(new KeyValuePair<string, string>("i_country", vendorModel.country.ToString()));
+            parameters.Add(new KeyValuePair<string, string>("i_state", vendorModel.province));
+            parameters.Add(new KeyValuePair<string, string>("i_city", vendorModel.city));
+            parameters.Add(new KeyValuePair<string, string>("i_pin", vendorModel.pin));
+            parameters.Add(new KeyValuePair<string, string>("i_phone", vendorModel.phone));
+            parameters.Add(new KeyValuePair<string, string>("i_fax", vendorModel.fax));
+            parameters.Add(new KeyValuePair<string, string>("i_mobile", vendorModel.mobile));
+            parameters.Add(new KeyValuePair<string, string>("i_email", vendorModel.email));
+
+            DataTable _dtResp = _objDataHelper.ExecuteProcedure("update_vendor", parameters);
+
+            if (this._objHelper.checkDBResponse(_dtResp))
+            {
+                if (_dtResp.Rows[0]["response"].ToString() == "0")
+                {
+                    ViewData["ErrorMessage"] = _dtResp.Rows[0]["message"].ToString();
+                }
+                else
+                {
+                    ViewData["SuccessMessage"] = "Vendor updated successfuly.";
+                }
+            }
+            else
+            {
+                ViewData["ErrorMessage"] = "Vendor service unavailable";
+            }
+
+            ViewData["VendorList"] = null;
+
+            DataTable _dtResp2 = GetVendorList();
+
+            if (this._objHelper.checkDBNullResponse(_dtResp2))
+            {
+                ViewData["VendorList"] = _dtResp2;
+            }
+            else
+            {
+                ViewData["ListErrorMessage"] = "Unable to fetch data. Try again later.";
+            }
+
+            ViewData["CountryList"] = GetCountryList();
+            return View("~/Views/Panel/Vendor/Edit.cshtml");
         }
         #endregion
 

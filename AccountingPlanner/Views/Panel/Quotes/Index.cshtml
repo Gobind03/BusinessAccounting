@@ -1,6 +1,6 @@
 ﻿@using System.Data;
 @{
-    ViewData["Title"] = "Estimate";
+    ViewData["Title"] = "Quotes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -12,7 +12,7 @@
         <a href="index.html">Income</a>
     </li>
     <li class="breadcrumb-item">
-        <span>Estimate</span>
+        <span>Quotes</span>
     </li>
 </ul>
 <!--------------------
@@ -22,11 +22,11 @@ END - Breadcrumbs
     <div class="content-box">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Business Section
+                Quotes Section
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
-                    Estimate List <a asp-controller="Income" asp-action="Create" class="btn brn-sm btn-primary float-right"><i class="fa fa-plus"></i> &nbsp; Create Estimate</a>
+                    Quotes List <a asp-controller="Quotes" asp-action="Create" class="btn brn-sm btn-primary float-right"><i class="fa fa-plus"></i> &nbsp; Create Estimate</a>
                 </h5>
                 <div class="form-desc">
                     DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
@@ -47,7 +47,7 @@ END - Breadcrumbs
                                 <small style="border-bottom: 0px;" class="form-desc">
                                     You have not registered any estimates yet. Click below to register your first estimate.
                                     <br /><br />
-                                    <a asp-controller="Income" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
+                                    <a asp-controller="Quotes" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
                                 </small>
                             </div>
                         }
@@ -70,12 +70,12 @@ END - Breadcrumbs
                                     {
                                         <tr>
                                             <td>@(i + 1)</td>
-                                            <td>@_dt.Rows[i]["name"]</td>
-                                            <td>@_dt.Rows[i]["type_of_organization"]</td>
-                                            <td>@_dt.Rows[i]["type_of_business"]</td>
-                                            <td>@_dt.Rows[i]["mobile"]</td>
-                                            <td>@_dt.Rows[i]["currency_label"]</td>
-                                            <td>@_dt.Rows[i]["country_name"]</td>
+                                            <td>@_dt.Rows[i]["header"]</td>
+                                            <td>@_dt.Rows[i]["customer_name"]</td>
+                                            <td>@_dt.Rows[i]["subhead"]</td>
+                                            <td>@_dt.Rows[i]["version"]</td>
+                                            <td>@_dt.Rows[i]["created_on"]</td>
+                                            <td>@_dt.Rows[i]["created_by"]</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -94,4 +94,3 @@ END - Breadcrumbs
         </div>
     </div>
 </div>
-

@@ -1,0 +1,171 @@
+﻿@model AccountingPlanner.Models.Expense.BillsModel
+@{
+    ViewData["Title"] = "Create Bills";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="index.html">Home</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="index.html">Expense</a>
+    </li>
+    <li class="breadcrumb-item">
+        <span>Bill</span>
+    </li>
+</ul>
+<!--------------------
+END - Breadcrumbs
+-------------------->
+<div class="content-i">
+    <div class="content-box">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Expense/Bill Section
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Create Bill
+                </h5>
+                <div class="form-desc">
+                    DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
+                </div>
+
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label asp-for="header" class="control-label"></label>
+                                        <input placeholder="Estimate Title" asp-for="header" class="form-control form-control-lg" />
+                                        <span asp-validation-for="header" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <label asp-for="version" class="control-label"></label>
+                                        <input asp-for="version" placeholder="Estimate Version" class="form-control form-control-lg" />
+                                        <span asp-validation-for="version" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <fieldset>
+                        <legend><span>Bill Details</span></legend>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="vendor" class="control-label"></label>
+                                    <select asp-for="vendor" class="form-control">
+                                        <option value="">-- Choose One --</option>
+                                        @{
+                                            for (int i = 0; i < ViewBag.CustomerList.Rows.Count; i++)
+                                            {
+                                                <option value="@ViewBag.CustomerList.Rows[i]["id_vendor_master"]">
+                                                    @ViewBag.CustomerList.Rows[i]["name"]
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="vendor" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="currency" class="control-label"></label>
+                                    <select asp-for="currency" class="form-control" id="countryList">
+                                        <option value="">-- Choose One --</option>
+                                    </select>
+                                    <span asp-validation-for="currency" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="date" class="control-label"></label>
+                                    <input type="date" asp-for="date" class="form-control" />
+                                    <span asp-validation-for="date" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="expires" class="control-label"></label>
+                                    <input type="date" asp-for="expires" class="form-control" />
+                                    <span asp-validation-for="expires" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="subhead" class="control-label"></label>
+                                    <input asp-for="subhead" placeholder="Estimate Sub-Head" class="form-control" />
+                                    <span asp-validation-for="subhead" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="memo" class="control-label"></label>
+                                    <textarea asp-for="memo" placeholder="Estimate Memo Text" class="form-control"></textarea>
+                                    <span asp-validation-for="memo" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label asp-for="footer" class="control-label"></label>
+                                    <input asp-for="footer" placeholder="Estimate Footer" class="form-control" />
+                                    <span asp-validation-for="footer" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="po_so" class="control-label"></label>
+                                    <input asp-for="po_so" placeholder="P.O/S.O" class="form-control" />
+                                    <span asp-validation-for="po_so" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><span>Item Details <button class="btn btn-sm btn-success" type="button" id="addGrid">Add</button></span></legend>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Tax</th>
+                                    <th>Amount</th>
+                                    <th class="col-xs-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="list"></tbody>
+                        </table>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" value="Add Bill" class="btn btn-primary pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <script src="~/custom/bills.js"></script>
+}
