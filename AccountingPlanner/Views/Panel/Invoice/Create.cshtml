@@ -1,0 +1,137 @@
+﻿@model AccountingPlanner.Models.Invoice.InvoiceModel
+@{
+    ViewData["Title"] = "Create Invoice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb">
+    <li class="breadcrumb-item">
+        <a href="index.html">Home</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="index.html">Income</a>
+    </li>
+    <li class="breadcrumb-item">
+        <span>Invoice</span>
+    </li>
+</ul>
+<!--------------------
+END - Breadcrumbs
+-------------------->
+<div class="content-i">
+    <div class="content-box">
+        <div class="element-wrapper">
+            <h6 class="element-header">
+                Income/Estimate Section
+            </h6>
+            <div class="element-box">
+                <h5 class="form-header">
+                    Create Invoice
+                </h5>
+                <div class="form-desc">
+                    DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
+                </div>
+
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <fieldset>
+                        <legend><span>Invoice Details</span></legend>
+
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="cutomer" class="control-label"></label>
+                                    <select asp-for="cutomer" class="form-control">
+                                        <option value="">-- Choose One --</option>
+                                        @{
+                                            for (int i = 0; i < ViewBag.CustomerList.Rows.Count; i++)
+                                            {
+                                                <option value="@ViewBag.CustomerList.Rows[i]["id_customer_master"]">
+                                                    @ViewBag.CustomerList.Rows[i]["name"]
+                                                </option>
+                                            }
+                                        }
+                                    </select>
+                                    <span asp-validation-for="cutomer" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="currency" class="control-label"></label>
+                                    <select asp-for="currency" class="form-control" id="countryList">
+                                        <option value="">-- Choose One --</option>
+                                    </select>
+                                    <span asp-validation-for="currency" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="due_date" class="control-label"></label>
+                                    <input type="date" asp-for="due_date" class="form-control" />
+                                    <span asp-validation-for="due_date" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label asp-for="invoice_date" class="control-label"></label>
+                                    <input type="date" asp-for="invoice_date" class="form-control" />
+                                    <span asp-validation-for="invoice_date" class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="order_number" class="control-label"></label>
+                                    <input asp-for="order_number" placeholder="Estimate Sub-Head" class="form-control" />
+                                    <span asp-validation-for="order_number" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label asp-for="invoice_number" class="control-label"></label>
+                                    <input asp-for="invoice_number" placeholder="Invoice Number" class="form-control" />
+                                    <span asp-validation-for="invoice_number" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend><span>Item Details <button class="btn btn-sm btn-success" type="button" id="addGrid">Add</button></span></legend>
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Description</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Tax</th>
+                                    <th>Amount</th>
+                                    <th class="col-xs-1"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="list"></tbody>
+                        </table>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <input type="submit" value="Add Estimate" class="btn btn-primary pull-right" />
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+    {
+    <script src="~/custom/invoice.js"></script>
+}

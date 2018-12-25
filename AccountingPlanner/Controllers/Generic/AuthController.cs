@@ -95,6 +95,10 @@ namespace AccountingPlanner.Controllers.Generic
 
                     if (string.IsNullOrEmpty(loginModel.ReturnUrl))
                     {
+                        if (loginModel.username == "admin")
+                        {
+                            return RedirectToAction("Index", "AdminUsers");
+                        }
                         return RedirectToAction("Index", "Home");
                     }
                     else

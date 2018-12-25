@@ -1,6 +1,6 @@
 ﻿@using System.Data;
 @{
-    ViewData["Title"] = "Bills";
+    ViewData["Title"] = "Quotes";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -9,25 +9,24 @@
         <a href="index.html">Home</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="index.html">Expenses</a>
+        <a href="index.html">Income</a>
     </li>
     <li class="breadcrumb-item">
-        <span>Bills</span>
+        <span>Invoice</span>
     </li>
 </ul>
 <!--------------------
 END - Breadcrumbs
 -------------------->
 <div class="content-i">
-    <a href="~/Views/Panel/Bills/Index.cshtml">~/Views/Panel/Bills/Index.cshtml</a>
     <div class="content-box">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Bills Section
+                Invoice Section
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
-                    Bills List <a asp-controller="Bills" asp-action="Create" class="btn brn-sm btn-primary float-right"><i class="fa fa-plus"></i> &nbsp; Create Estimate</a>
+                    Invoice List <a asp-controller="Invoice" asp-action="Create" class="btn brn-sm btn-primary float-right"><i class="fa fa-plus"></i> &nbsp; Create Estimate</a>
                 </h5>
                 <div class="form-desc">
                     DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
@@ -44,11 +43,11 @@ END - Breadcrumbs
                         if (_dt.Rows.Count == 0)
                         {
                             <div class="text-center">
-                                <h5>No Bills Created</h5>
+                                <h5>No Invoice Created</h5>
                                 <small style="border-bottom: 0px;" class="form-desc">
-                                    You have not registered any bills yet. Click below to register your first bill.
+                                    You have not registered any Invoice yet. Click below to register your first Invoice.
                                     <br /><br />
-                                    <a asp-controller="Bills" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
+                                    <a asp-controller="Invoice" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
                                 </small>
                             </div>
                         }
@@ -58,10 +57,10 @@ END - Breadcrumbs
                                 <thead>
                                     <tr>
                                         <th>S. No.</th>
-                                        <th>Header</th>
-                                        <th>Vendor</th>
-                                        <th>Subhead</th>
-                                        <th>Version</th>
+                                        <th>Invoice Number</th>
+                                        <th>Customer</th>
+                                        <th>Date</th>
+                                        <th>Order Number</th>
                                         <th>Added On</th>
                                         <th>Added By</th>
                                     </tr>
@@ -71,10 +70,10 @@ END - Breadcrumbs
                                     {
                                         <tr>
                                             <td>@(i + 1)</td>
-                                            <td>@_dt.Rows[i]["header"]</td>
-                                            <td>@_dt.Rows[i]["vendor_name"]</td>
-                                            <td>@_dt.Rows[i]["subhead"]</td>
-                                            <td>@_dt.Rows[i]["version"]</td>
+                                            <td>@_dt.Rows[i]["invoice_number"]</td>
+                                            <td>@_dt.Rows[i]["customer_name"]</td>
+                                            <td>@_dt.Rows[i]["invoice_date"]</td>
+                                            <td>@_dt.Rows[i]["order_number"]</td>
                                             <td>@_dt.Rows[i]["created_on"]</td>
                                             <td>@_dt.Rows[i]["created_by"]</td>
                                         </tr>

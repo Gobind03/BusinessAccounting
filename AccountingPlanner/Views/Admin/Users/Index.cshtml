@@ -1,33 +1,31 @@
 ﻿@using System.Data;
 @{
-    ViewData["Title"] = "Bills";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-
 <ul class="breadcrumb">
     <li class="breadcrumb-item">
-        <a href="index.html">Home</a>
+        <a href="index.html">Admin</a>
     </li>
     <li class="breadcrumb-item">
-        <a href="index.html">Expenses</a>
+        <a href="index.html">Users</a>
     </li>
     <li class="breadcrumb-item">
-        <span>Bills</span>
+        <span>List</span>
     </li>
 </ul>
 <!--------------------
 END - Breadcrumbs
 -------------------->
 <div class="content-i">
-    <a href="~/Views/Panel/Bills/Index.cshtml">~/Views/Panel/Bills/Index.cshtml</a>
     <div class="content-box">
         <div class="element-wrapper">
             <h6 class="element-header">
-                Bills Section
+                Users Section
             </h6>
             <div class="element-box">
                 <h5 class="form-header">
-                    Bills List <a asp-controller="Bills" asp-action="Create" class="btn brn-sm btn-primary float-right"><i class="fa fa-plus"></i> &nbsp; Create Estimate</a>
+                    Users List
                 </h5>
                 <div class="form-desc">
                     DropzoneJS is an open source library that provides drag’n’drop file uploads with image previews. <a href="http://www.dropzonejs.com/" target="_blank">Learn More here</a>
@@ -36,19 +34,24 @@ END - Breadcrumbs
                 {
                     <div class="alert alert-success"><strong>Done!</strong> @TempData["SuccessMessage"]</div>
                 }
+                @if (!string.IsNullOrEmpty(Convert.ToString(TempData["DeleteMessage"])))
+                {
+                    <div class="alert alert-warning"><strong>Done!</strong> @TempData["DeleteMessage"]</div>
+                }
+
                 @{
                     DataTable _dt;
-                    if (ViewData["EstimateList"] != null)
+                    if (ViewData["UsersList"] != null)
                     {
-                        _dt = (DataTable)ViewData["EstimateList"];
+                        _dt = (DataTable)ViewData["UsersList"];
                         if (_dt.Rows.Count == 0)
                         {
                             <div class="text-center">
-                                <h5>No Bills Created</h5>
+                                <h5>No Business Registered</h5>
                                 <small style="border-bottom: 0px;" class="form-desc">
-                                    You have not registered any bills yet. Click below to register your first bill.
+                                    You have not registered any business yet. Click below to register your first business.
                                     <br /><br />
-                                    <a asp-controller="Bills" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
+                                    <a asp-controller="Business" asp-action="Create" class="btn btn-outline-success text-center">Register Now</a>
                                 </small>
                             </div>
                         }
@@ -58,12 +61,11 @@ END - Breadcrumbs
                                 <thead>
                                     <tr>
                                         <th>S. No.</th>
-                                        <th>Header</th>
-                                        <th>Vendor</th>
-                                        <th>Subhead</th>
-                                        <th>Version</th>
-                                        <th>Added On</th>
-                                        <th>Added By</th>
+                                        <th>Name</th>
+                                        <th>eMail</th>
+                                        <th>Created On</th>
+                                        <th>Status</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -71,12 +73,20 @@ END - Breadcrumbs
                                     {
                                         <tr>
                                             <td>@(i + 1)</td>
-                                            <td>@_dt.Rows[i]["header"]</td>
-                                            <td>@_dt.Rows[i]["vendor_name"]</td>
-                                            <td>@_dt.Rows[i]["subhead"]</td>
-                                            <td>@_dt.Rows[i]["version"]</td>
+                                            <td>@_dt.Rows[i]["name"]</td>
+                                            <td>@_dt.Rows[i]["email"]</td>
                                             <td>@_dt.Rows[i]["created_on"]</td>
-                                            <td>@_dt.Rows[i]["created_by"]</td>
+                                            <td>@_dt.Rows[i]["is_active"]</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button id="btnGroupDrop1" type="button" class="btn btn-outline-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        ...
+                                                    </button>
+                                                    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                                        <a class="dropdown-item" asp-controller="AdminUsers" asp-action="ChangeStatus" asp-route-id="@_dt.Rows[i]["id_user_master"]">Change Status</a>
+                                                    </div>
+                                                </div>
+                                            </td>
                                         </tr>
                                     }
                                 </tbody>
@@ -95,3 +105,6 @@ END - Breadcrumbs
         </div>
     </div>
 </div>
+
+
+
